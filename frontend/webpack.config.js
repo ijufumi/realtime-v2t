@@ -5,7 +5,7 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.tsx?$/,
+                test: /\.(tsx|jsx)?$/,
                 use: {
                     loader: "babel-loader",
                     options: {
@@ -30,7 +30,7 @@ module.exports = {
         ]
     },
     resolve: {
-        extensions: [".tsx", ".ts", ".js", ".css"]
+        extensions: [".tsx", ".ts", ".js", ".jsx", ".css"]
     },
     output: {
         path: path.resolve(__dirname, "dist"),

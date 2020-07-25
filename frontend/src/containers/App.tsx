@@ -1,8 +1,9 @@
 import React from 'react';
-import styled from 'styled-components';
-import { faMicrophoneAlt, faPlayCircle } from "@fortawesome/free-solid-svg-icons";
+import styled, { keyframes } from 'styled-components';
+import { faMicrophoneAlt, faPlayCircle, faStopCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
+import Audio from "../utils/Audio";
 
 enum Status {
   STARTED,
@@ -15,38 +16,27 @@ class App extends React.Component<any, any> {
     status: Status.STOPPED
   }
 
-  handleStartRecord = () => {
-    // const recordedChunks = [];
-    // const player = document.getElementById('player');
-    //
-    // const handleSuccess = function(stream) {
-    //   const mediaStream = new MediaStream(stream)
-    //
-    //   const mediaRecorder = new MediaRecorder(stream, options);
-    //
-    //   mediaStream.addEventListener('dataavailable', function(e) {
-    //     if (e.data.size > 0) {
-    //       recordedChunks.push(e.data);
-    //     }
-    //
-    //     if(shouldStop === true && stopped === false) {
-    //       mediaStream.stop();
-    //       stopped = true;
-    //     }
-    //   });
-    // };
-    //
-    // navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(handleSuccess);
+  audio = new Audio();
 
+  handleStartRecord = () => {
+    this.audio.handleStart();
     this.setState ({
       status: Status.STARTED
     });
   }
 
   handleStopRecord = () => {
+    this.audio.handleStop();
     this.setState ({
       status: Status.STOPPED
     });
+  }
+
+  handlePlay = () => {
+    const audioElement = document.getElementById("player");
+    if (audioElement) {
+      this.audio.handlePlay(audioElement);
+    }
   }
 
   render() {
@@ -65,21 +55,25 @@ class App extends React.Component<any, any> {
     return (
       <Container>
         <StopButtonContainer isVisible={this.state.status == Status.STARTED}>
+          <RecLabel>
+            <FiberManualRecordIcon htmlColor={'red'} />
+            REC
+          </RecLabel>
           <StopButtonBlock>
-            <FiberManualRecordIcon htmlColor={'red'} onClick={this.handleStopRecord} />
+            <FontAwesomeIcon icon={faStopCircle} size={'2x'} color={'#FFFFFF'} onClick={this.handleStopRecord} />
           </StopButtonBlock>
         </StopButtonContainer>
         <MikeContainer onClick={this.handleStartRecord}>
           <FontAwesomeIcon icon={faMicrophoneAlt} size={'10x'}/>
         </MikeContainer>
-        <ResultContainer>
-          <Title>Result</Title>
+        <ResultContainer isVisible={data.length !== 0}>
+          <Title>Results</Title>
           <ResultTable>
             {data.map((d, idx) => {
               return <Row key={`row-key-${idx}`}>
                 <TextCell>{d.text}</TextCell>
                 <VoiceCell>
-                  <FontAwesomeIcon icon={faPlayCircle} size={'2x'} />
+                  <FontAwesomeIcon icon={faPlayCircle} size={'2x'} onClick={this.handlePlay} />
                 </VoiceCell>
               </Row>
             })}
@@ -127,7 +121,7 @@ const StopButtonContainer = styled.div<{ isVisible: boolean }>`
   left: 0;  
   background-color: rgb(0, 0, 0, 0.5);
   z-index: 10;
-  display: ${({ isVisible }) => (isVisible ? ''  : 'none')};
+  visibility: ${({ isVisible }) => (isVisible ? 'visible'  : 'hidden')};
 `;
 
 const StopButtonBlock = styled.div`
@@ -141,11 +135,33 @@ const StopButtonBlock = styled.div`
   border-radius: 5px;
 `;
 
-const ResultContainer = styled.div`
+const RecLabelAnimation = keyframes`
+    0% {
+      opacity:0;
+    }
+    100% {
+      opacity:1;
+    }
+`;
+
+const RecLabel = styled.div`
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 10px;
+  color: #FFFFFF;
+  animation: ${RecLabelAnimation} 1s ease-in-out infinite alternate;
+`;
+
+const ResultContainer = styled.div<{ isVisible: boolean }>`
   background-color: #FFFFFF;
   display: flex;
   flex-direction: column;
   width: 600px;
+  visibility: ${({ isVisible }) => (isVisible ? 'visible'  : 'hidden')};
 `;
 
 const Title = styled.div`
