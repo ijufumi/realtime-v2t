@@ -8,8 +8,20 @@ USERS = set()
 async def serve(ws, path):
     logger.info("serve start")
     try:
-        register(ws)
         async for message in ws:
+            if isinstance(message, str):
+                if message == "start":
+                    register(ws)
+                    # TODO: send all data
+                    continue
+                elif message == "end":
+                    break
+            elif isinstance(message, bytes):
+                # TODO: save to S3
+                # TODO: register to DB
+                # TODO: execute voice to text
+                # TODO: notify all users
+                pass
             # name = await ws.recv()
             logger.info(f"received: {message}")
             greeting = f"Hello {message}!"
