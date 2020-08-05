@@ -9,6 +9,8 @@ python = "^3.8"
 python-dotenv = "^0.14.0"
 websockets = "^8.1"
 asyncio = "^3.4.3"
+boto3 = "^1.14.35"
+alembic = "^1.4.2"
 
 [tool.poetry.dev-dependencies]
 
