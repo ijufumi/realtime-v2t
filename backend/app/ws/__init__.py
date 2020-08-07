@@ -1,3 +1,2 @@
-from .serve import serve
+from .serve import Server
 
-all = ['serve']
