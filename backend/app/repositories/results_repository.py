@@ -1,4 +1,4 @@
-from . import session_maker
+from .base import session_maker
 from app.models import Result
 
 

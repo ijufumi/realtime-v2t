@@ -91,6 +91,14 @@ version = "1.1.1"
 
 [[package]]
 category = "main"
+description = "Python interface to MySQL"
+name = "mysqlclient"
+optional = false
+python-versions = ">=3.5"
+version = "2.0.1"
+
+[[package]]
+category = "main"
 description = "Extensions to the standard Python datetime module"
 name = "python-dateutil"
 optional = false
@@ -181,7 +189,7 @@ python-versions = ">=3.6.1"
 version = "8.1"
 
 [metadata]
-content-hash = "aab69af37eb0c247e93b79ff60735e477cafca189d908b88ec321be6a314a75a"
+content-hash = "c68bf5859f5e57160ccc7a23b0bd9ec9291a5ddb2794deeeb2b0950cfa91a48b"
 lock-version = "1.0"
 python-versions = "^3.8"
 
@@ -250,6 +258,12 @@ markupsafe = [
     {file = "MarkupSafe-1.1.1-cp38-cp38-win32.whl", hash = "sha256:596510de112c685489095da617b5bcbbac7dd6384aeebeda4df6025d0256a81b"},
     {file = "MarkupSafe-1.1.1-cp38-cp38-win_amd64.whl", hash = "sha256:e8313f01ba26fbbe36c7be1966a7b7424942f670f38e666995b88d012765b9be"},
     {file = "MarkupSafe-1.1.1.tar.gz", hash = "sha256:29872e92839765e546828bb7754a68c418d927cd064fd4708fab9fe9c8bb116b"},
+]
+mysqlclient = [
+    {file = "mysqlclient-2.0.1-cp36-cp36m-win_amd64.whl", hash = "sha256:edd42ccaa444b00702d5374b2f5f7585c9d0ce201917f15339f1c3cf91c1b1ed"},
+    {file = "mysqlclient-2.0.1-cp37-cp37m-win_amd64.whl", hash = "sha256:3f39855a4ad22805361e782cc4d1010ac74796225fa2d1c03cc16673ccdc983a"},
+    {file = "mysqlclient-2.0.1-cp38-cp38-win_amd64.whl", hash = "sha256:a6b5648f648b16335e3b1aaec93dc3fcc81a9a661180e306936437cc522c810b"},
+    {file = "mysqlclient-2.0.1.tar.gz", hash = "sha256:fb2f75aea14722390d2d8ddf384ad99da708c707a96656210a7be8af20a2c5e5"},
 ]
 python-dateutil = [
     {file = "python-dateutil-2.8.1.tar.gz", hash = "sha256:73ebfe9dbf22e832286dafa60473e4cd239f8592f699aa5adaf10050e6e1823c"},
