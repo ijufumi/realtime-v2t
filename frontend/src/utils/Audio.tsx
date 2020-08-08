@@ -55,4 +55,8 @@ export default class Audio {
             element.play();
         }
     }
+
+    get recordedData()  {
+        return this.recordedChunks;
+    }
 }

@@ -3,7 +3,9 @@ import styled, { keyframes } from 'styled-components';
 import { faMicrophoneAlt, faPlayCircle, faStopCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
+
 import Audio from "../utils/Audio";
+import Sockets from "../utils/Sockets";
 
 enum Status {
   STARTED,
@@ -17,6 +19,7 @@ class App extends React.Component<any, any> {
   }
 
   audio = new Audio();
+  sockets = new Sockets("http://localhost:8080");
 
   handleStartRecord = () => {
     this.audio.handleStart();
@@ -30,6 +33,7 @@ class App extends React.Component<any, any> {
     this.setState ({
       status: Status.STOPPED
     });
+    this.sockets.sendBinary('message', this.audio.recordedData);
   }
 
   handlePlay = () => {
@@ -59,13 +63,13 @@ class App extends React.Component<any, any> {
             <FiberManualRecordIcon htmlColor={'red'} />
             REC
           </RecLabel>
-          <StopButtonBlock>
-            <FontAwesomeIcon icon={faStopCircle} size={'2x'} color={'#FFFFFF'} onClick={this.handleStopRecord} />
+          <StopButtonBlock onClick={this.handleStopRecord} >
+            <FontAwesomeIcon icon={faStopCircle} size={'2x'} color={'#FFFFFF'}/>
           </StopButtonBlock>
         </StopButtonContainer>
-        <MikeContainer onClick={this.handleStartRecord}>
+        <MicrophoneContainer onClick={this.handleStartRecord}>
           <FontAwesomeIcon icon={faMicrophoneAlt} size={'10x'}/>
-        </MikeContainer>
+        </MicrophoneContainer>
         <ResultContainer isVisible={data.length !== 0}>
           <Title>Results</Title>
           <ResultTable>
@@ -97,7 +101,7 @@ const Container = styled.div`
   font-family:  Helvetica,Arial,sans-serif;
 `;
 
-const MikeContainer = styled.div`
+const MicrophoneContainer = styled.div`
   background-color: #FFFFFF;
   margin: 20px;
   display: flex;
