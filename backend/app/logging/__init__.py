@@ -1,4 +1,4 @@
 import logging
-logger = logging.getLogger('websockets')
+logger = logging.getLogger('backend')
 logger.setLevel(logging.INFO)
 logger.addHandler(logging.StreamHandler())
