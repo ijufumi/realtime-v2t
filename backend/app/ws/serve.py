@@ -1,13 +1,15 @@
 import socketio
 from sanic import Sanic
+from sanic_cors import CORS
 
 from app.config import Config
 from app.logging import logger
 from app.services import S3Service
 
 
-sio = socketio.AsyncServer(async_mode='sanic')
+sio = socketio.AsyncServer(async_mode='sanic', cors_allowed_origins=[])
 app = Sanic()
+CORS(app, resources={r"/*": {"origins": "*"}})
 sio.attach(app)
 
 
@@ -32,3 +34,4 @@ class Server:
     @staticmethod
     def run():
         app.run(host=Config.WS_HOST, port=Config.WS_PORT)
+

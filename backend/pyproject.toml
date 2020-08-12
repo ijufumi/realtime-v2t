@@ -13,6 +13,7 @@ mysqlclient = "^2.0.1"
 python-dotenv = "^0.14.0"
 python-socketio = "^4.6.0"
 sanic = "^20.6.3"
+sanic-cors = "^0.10.0"
 
 [tool.poetry.dev-dependencies]
 
