@@ -1,9 +1,8 @@
-from app.ws import Server
+from app.ws import run_server
 
 
 def run():
-    server = Server()
-    server.run()
+    run_server()
 
 
 if __name__ == '__main__':

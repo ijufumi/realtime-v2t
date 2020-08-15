@@ -12,8 +12,7 @@ alembic = "^1.4.2"
 mysqlclient = "^2.0.1"
 python-dotenv = "^0.14.0"
 python-socketio = "^4.6.0"
-sanic = "^20.6.3"
-sanic-cors = "^0.10.0"
+eventlet = "^0.26.1"
 
 [tool.poetry.dev-dependencies]
 

@@ -8,7 +8,7 @@ load_dotenv(dotenv_path)
 
 class Config:
     WS_HOST = os.getenv("WS_HOST", 'localhost')
-    WS_PORT = os.getenv("WS_PORT", '8080')
+    WS_PORT = int(os.getenv("WS_PORT", '8080'))
 
     AWS_KEY = os.getenv("AWS_KEY", '')
     AWS_SECRET = os.getenv("AWS_SECRET", '')

@@ -1,2 +1,2 @@
-from .serve import Server
+from .serve import run_server
 
