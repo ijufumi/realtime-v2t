@@ -21,8 +21,15 @@ class App extends React.Component<any, any> {
   audio = new Audio();
   sockets = new Sockets("http://localhost:8080");
 
+  componentDidMount() {
+    // this.sockets.on("connect", () => console.log("connected"));
+    // this.sockets.sendText("connect", "hello");
+    console.log(this.sockets.isConnected);
+  }
+
   handleStartRecord = () => {
     this.audio.handleStart();
+    this.sockets.sendText('message', { message: "start" });
     this.setState ({
       status: Status.STARTED
     });
@@ -33,7 +40,7 @@ class App extends React.Component<any, any> {
     this.setState ({
       status: Status.STOPPED
     });
-    this.sockets.sendBinary('message', this.audio.recordedData);
+    this.sockets.sendText('message', this.audio.recordedData);
   }
 
   handlePlay = () => {
