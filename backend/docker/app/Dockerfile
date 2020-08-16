@@ -1,10 +1,18 @@
-FROM ubuntu:20.04
+FROM python:3.8-alpine
 
-RUN apt-get update
-RUN apt-get install python
+RUN apk update
+RUN apk add mysql-client
+RUN apk add gcc
+RUN apk add musl-dev
+RUN apk add libffi-dev
+RUN apk add openssl-dev
+
+RUN pip install poetry
 
 WORKDIR /opt/backend
 COPY . ${WORKDIR}
 
+
 RUN poetry install
-CMD python main.py
+CMD chmod +x ./scripts/entrypoint.sh
+CMD ./scripts/entrypoint.sh
