@@ -17,18 +17,21 @@ s3_service = S3Service()
 @sio.event
 def connect(sid: Text, environ) -> None:
     logger.info(f"connected: {sid}")
-    #sio.enter_room(sid, 'roos', 'default')
 
 
 @sio.event
 def disconnect(sid) -> None:
     logger.info(f"disconnected: {sid}")
-    #sio.leave_room(sid, 'room', 'default')
 
 
 @sio.event
-def message(sid: Text, data: Any) -> None:
-    logger.info(f"received: {sid}:{data}")
+def voice_message(sid: Text, data: bytes) -> None:
+    logger.info(f"received voice message:{sid}")
+    file_path = s3_service.save_to_tmp(data)
+    key = s3_service.upload(file_path)
+    s3_service.store_to_db(key)
+    url = s3_service.get_pre_signed_url(key)
+    sio.emit("send_result", {"key": key, "url": url})
 
 
 def run_server():
