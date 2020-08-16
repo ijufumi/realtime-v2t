@@ -13,7 +13,7 @@ services:
       - ./.env
 
   app:
-    build: docker/app
+    build: ./
     ports:
       - "8324:8324"
     depends_on:

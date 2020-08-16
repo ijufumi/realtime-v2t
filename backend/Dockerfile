@@ -10,9 +10,9 @@ RUN apk add openssl-dev
 RUN pip install poetry
 
 WORKDIR /opt/backend
-COPY . ${WORKDIR}
+COPY . ./
+RUN ls
 
-
-RUN poetry install
+RUN poetry config virtualenvs.create false && poetry install
 CMD chmod +x ./scripts/entrypoint.sh
 CMD ./scripts/entrypoint.sh
