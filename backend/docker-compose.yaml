@@ -1,18 +1,20 @@
-version: '3.1'
+version: '3'
 services:
   database:
     image: mysql
     restart: always
     volumes:
-    - ./docker/database/my.cnf: /etc/mysqld/my.cnf
+      - ./docker/database/my.cnf:/etc/mysqld/my.cnf
     environment:
       MYSQL_ROOT_PASSWORD: P@ssW0rd
     ports:
-      - 3306: 3306
+      - "3306:3306"
+    env_file:
+      - ./.env
 
   app:
     build: docker/app
     ports:
-      - 8324: 8324
+      - "8324:8324"
     depends_on:
       - database
