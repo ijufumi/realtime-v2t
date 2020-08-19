@@ -4,17 +4,21 @@ services:
     image: mysql
     restart: always
     volumes:
+      - db-data:/var/lib/mysql
       - ./docker/database/my.cnf:/etc/mysqld/my.cnf
     environment:
-      MYSQL_ROOT_PASSWORD: P@ssW0rd
+      MYSQL_ROOT_PASSWORD: password
     ports:
       - "3306:3306"
-    env_file:
-      - ./.env
 
   app:
     build: ./
     ports:
-      - "8324:8324"
+      - "8080:8080"
     depends_on:
       - database
+    env_file:
+      - ./.env
+
+volumes:
+  db-data:
