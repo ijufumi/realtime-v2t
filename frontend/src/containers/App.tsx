@@ -29,7 +29,7 @@ class App extends React.Component<any, any> {
 
   handleStartRecord = () => {
     this.audio.handleStart();
-    this.sockets.sendText('message', { message: "start" });
+    this.sockets.sendText('message', "start");
     this.setState ({
       status: Status.STARTED
     });
@@ -40,7 +40,8 @@ class App extends React.Component<any, any> {
     this.setState ({
       status: Status.STOPPED
     });
-    this.sockets.sendText('message', this.audio.recordedData);
+    this.sockets.sendText('message', "end");
+    this.sockets.sendBinary('voice_message', this.audio.recordedData);
   }
 
   handlePlay = () => {
