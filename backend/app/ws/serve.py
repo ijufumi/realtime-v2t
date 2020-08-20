@@ -4,7 +4,7 @@ from typing import Text, List
 
 from app.config import Config
 from app.logging import logger
-from app.services import S3Service
+from app.services import S3Service, GoogleSpeechService
 
 
 manager = socketio.BaseManager()
@@ -12,6 +12,7 @@ sio = socketio.Server(async_mode='eventlet', client_manager=manager, binary=True
 app = socketio.WSGIApp(sio)
 
 s3_service = S3Service()
+speech_service = GoogleSpeechService()
 
 
 @sio.event
@@ -32,7 +33,8 @@ def voice_message(sid: Text, data: List[bytes]) -> None:
     key = s3_service.upload(file_path)
     s3_service.store_to_db(key)
     url = s3_service.get_pre_signed_url(key)
-    sio.emit("send_result", {"key": key, "url": url})
+    texts = speech_service.to_text(url)
+    sio.emit("send_result", {"key": key, "url": url, "texts": texts})
 
 
 @sio.event
