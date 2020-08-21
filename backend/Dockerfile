@@ -5,6 +5,7 @@ RUN apk add bash
 RUN apk add mysql-client
 RUN apk add mariadb-dev
 RUN apk add gcc
+RUN apk add g++
 RUN apk add musl-dev
 RUN apk add libffi-dev
 RUN apk add openssl-dev
