@@ -55,6 +55,12 @@ class S3Service:
         result = self.result_repository.create(result)
         return result
 
+    def save(self, model: Result) -> Result:
+        return self.result_repository.update(model)
+
+    def get_all_from_db(self) -> List[Result]:
+        return self.result_repository.all()
+
     @staticmethod
     def _get_tmp_file(suffix: str) -> str:
         with tempfile.NamedTemporaryFile(delete=False) as file:

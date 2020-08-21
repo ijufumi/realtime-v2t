@@ -18,6 +18,10 @@ speech_service = GoogleSpeechService()
 @sio.event
 def connect(sid: Text, environ) -> None:
     logger.info(f"connected: {sid}")
+    data = s3_service.get_all_from_db()
+    for d in data:
+        url = s3_service.get_pre_signed_url(d.key)
+        sio.emit("send_result", {"key": d.audio_key, "url": url, "texts": d.text})
 
 
 @sio.event
@@ -31,9 +35,12 @@ def voice_message(sid: Text, data: List[bytes]) -> None:
     file_path = s3_service.save_to_tmp(data)
     file_path = s3_service.convert(file_path)
     key = s3_service.upload(file_path)
-    s3_service.store_to_db(key)
+    result = s3_service.store_to_db(key)
     url = s3_service.get_pre_signed_url(key)
-    texts = speech_service.to_text(url)
+    texts = speech_service.to_text(str(file_path.resolve()))
+    logger.info(f"[{sid}] result:{texts}")
+    result.text = texts
+    s3_service.save(result)
     sio.emit("send_result", {"key": key, "url": url, "texts": texts})
 
 
