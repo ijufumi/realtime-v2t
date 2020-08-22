@@ -22,7 +22,6 @@ def connect(sid: Text, environ) -> None:
     logger.info(f"data size is {len(data)}")
     for d in data:
         url = s3_service.get_pre_signed_url(d.audio_key)
-        logger.info(f"id:{d.id}, text:{d.text}")
         sio.emit("send_result", {"id": d.id, "url": url, "texts": d.text})
 
 
