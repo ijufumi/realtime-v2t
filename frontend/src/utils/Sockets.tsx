@@ -18,9 +18,7 @@ export default class Sockets {
   }
 
   on = (event, callback) => {
-    if (this.isConnected) {
-      this.socket.on(event, callback);
-    }
+    this.socket.on(event, callback);
   }
 
   sendText = (event, data) => {

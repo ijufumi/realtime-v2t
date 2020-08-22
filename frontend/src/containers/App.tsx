@@ -25,6 +25,11 @@ class App extends React.Component<any, any> {
     // this.sockets.on("connect", () => console.log("connected"));
     // this.sockets.sendText("connect", "hello");
     console.log(this.sockets.isConnected);
+    this.sockets.on("send_result", this.handleReflectResult);
+  }
+
+  handleReflectResult = (socket) => {
+    console.log(socket);
   }
 
   handleStartRecord = () => {
@@ -202,6 +207,7 @@ const Row = styled.div`
 
 const TextCell = styled.div`
   width: 560px;
+  margin-left: 5px;
 `;
 
 const VoiceCell = styled.div`
