@@ -4,8 +4,14 @@ import { faMicrophoneAlt, faPlayCircle, faStopCircle } from "@fortawesome/free-s
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 
+import { Table } from 'semantic-ui-react';
+import 'semantic-ui-css/semantic.min.css';
+
 import Audio from "../utils/Audio";
 import Sockets from "../utils/Sockets";
+import { API_ENDPOINT } from "../constants/hosts";
+
+import './App.css';
 
 enum Status {
   STARTED,
@@ -15,21 +21,38 @@ enum Status {
 
 class App extends React.Component<any, any> {
   state = {
-    status: Status.STOPPED
+    status: Status.STOPPED,
+    results: []
   }
 
   audio = new Audio();
-  sockets = new Sockets("http://localhost:8080");
+  sockets = new Sockets(API_ENDPOINT);
 
   componentDidMount() {
     // this.sockets.on("connect", () => console.log("connected"));
     // this.sockets.sendText("connect", "hello");
     console.log(this.sockets.isConnected);
-    this.sockets.on("send_result", this.handleReflectResult);
+    this.sockets.on("send_results", this.handleReceiveResults);
+    this.sockets.on("send_result", this.handleReceiveResult);
   }
 
-  handleReflectResult = (socket) => {
-    console.log(socket);
+  handleReceiveResults = (results) => {
+    this.setState({
+      results
+    })
+  }
+
+  handleReceiveResult = (result) => {
+    const check = this.state.results.find(v => v.id === result.id);
+    if (!check) {
+      this.setState(prev => {
+        const newResults = prev.results;
+        newResults.push(result);
+        return {
+          results: newResults
+        }
+      });
+    }
   }
 
   handleStartRecord = () => {
@@ -49,26 +72,35 @@ class App extends React.Component<any, any> {
     this.sockets.sendBinary('voice_message', this.audio.recordedData);
   }
 
-  handlePlay = () => {
-    const audioElement = document.getElementById("player");
-    if (audioElement) {
-      this.audio.handlePlay(audioElement);
+  renderResults = () => {
+    if (this.state.results.length === 0) {
+      return null;
     }
+    return <ResultContainer>
+      <Table celled>
+        <Table.Header>
+          <Table.Row>
+            <Table.HeaderCell width={10} textAlign={"center"}>Text</Table.HeaderCell>
+            <Table.HeaderCell width={1} textAlign={"center"}>Voice</Table.HeaderCell>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
+          {this.state.results.map((d, idx) => {
+            return <Table.Row key={`row-key-${idx}`}>
+              <Table.Cell>
+                {d.texts}
+              </Table.Cell>
+              <Table.Cell textAlign={"center"}>
+                <Player id={d.id} src={d.url} />
+              </Table.Cell>
+            </Table.Row>
+          })}
+        </Table.Body>
+      </Table>
+    </ResultContainer>;
   }
 
   render() {
-    const data = [
-      {
-        "text": "aaaaaaa"
-      },
-      {
-        "text": "bbbbbbbbb"
-      },
-      {
-        "text": "cccccccccccccccccccccccccccccccccccc"
-      }
-    ];
-
     return (
       <Container>
         <StopButtonContainer isVisible={this.state.status == Status.STARTED}>
@@ -83,20 +115,7 @@ class App extends React.Component<any, any> {
         <MicrophoneContainer onClick={this.handleStartRecord}>
           <FontAwesomeIcon icon={faMicrophoneAlt} size={'10x'}/>
         </MicrophoneContainer>
-        <ResultContainer isVisible={data.length !== 0}>
-          <Title>Results</Title>
-          <ResultTable>
-            {data.map((d, idx) => {
-              return <Row key={`row-key-${idx}`}>
-                <TextCell>{d.text}</TextCell>
-                <VoiceCell>
-                  <FontAwesomeIcon icon={faPlayCircle} size={'2x'} onClick={this.handlePlay} />
-                </VoiceCell>
-              </Row>
-            })}
-          </ResultTable>
-        </ResultContainer>
-        <audio id={"player"} />
+        { this.renderResults() }
       </Container>
     );
   }
@@ -104,7 +123,9 @@ class App extends React.Component<any, any> {
 
 const Container = styled.div`
   background-color: #EDF6FF;
+  min-width: 650px;
   width: 100vw;
+  min-height: 700px;
   height: 100vh;
   position: relative;
   display: flex;
@@ -120,8 +141,10 @@ const MicrophoneContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 250px;
-  width: 400px;
+  min-height: 250px;
+  max-height: 250px;
+  min-width: 400px;
+  max-width: 400px;
   border: 1px solid #DFDFDF;
   border-radius: 10px;
   cursor: pointer;
@@ -173,50 +196,77 @@ const RecLabel = styled.div`
   animation: ${RecLabelAnimation} 1s ease-in-out infinite alternate;
 `;
 
-const ResultContainer = styled.div<{ isVisible: boolean }>`
+const ResultContainer = styled.div`
   background-color: #FFFFFF;
   display: flex;
   flex-direction: column;
-  width: 600px;
-  visibility: ${({ isVisible }) => (isVisible ? 'visible'  : 'hidden')};
+  min-width: 650px;
 `;
 
 const Title = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size:  24px;
-  height: 50px;
+  font-size:  20px;
+  height: 30px;
   width: 100px;
 `;
 
-const ResultTable = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  padding: 5px;
-`;
-
-const Row = styled.div`
-  display: flex;
-  align-items: center;
-  width: calc(100% - 10px);
-  border-bottom: 1px solid #DFDFDF;
-  height: 50px;
-`;
-
-const TextCell = styled.div`
-  width: 560px;
-  margin-left: 5px;
-`;
-
 const VoiceCell = styled.div`
-  width: 30px;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
 `;
 
+class Player extends React.Component<any, any> {
+  state = {
+    playing: false
+  }
+
+  audioRef = null;
+
+  doPlay = ()  => {
+    this.audioRef.play();
+    this.setState({
+      playing: true
+    });
+
+  }
+
+  doStop = () => {
+    this.audioRef.pause();
+    this.setState({
+      playing: false
+    });
+  }
+
+  handleOnPause = () => {
+    this.setState({
+      playing: false
+    });
+  }
+
+  render() {
+    return (
+      <>
+        <VoiceCell>
+          {this.state.playing
+            ? <FontAwesomeIcon icon={faStopCircle} size={'2x'} onClick={this.doStop} />
+            : <FontAwesomeIcon icon={faPlayCircle} size={'2x'} onClick={this.doPlay} />
+          }
+        </VoiceCell>
+        <audio
+          key={`key-${this.props.id}`}
+          id={this.props.id}
+          ref={dom => this.audioRef = dom}
+          onPause={this.handleOnPause}
+        >
+          <source src={this.props.src} />
+        </audio>
+      </>
+    );
+  }
+}
 
 export default App;

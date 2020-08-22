@@ -22,9 +22,13 @@ module.exports = {
                 exclude: /node_modules/
             },
             {
-                test: /\.css?/,
+                test: /\.css$/,
+                loader: ["style-loader", "css-loader"]
+            },
+            {
+                test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/,
                 use: {
-                    loader: "css-loader"
+                    loader: 'file-loader?name=assets/[name].[hash].[ext]'
                 }
             }
         ]
