@@ -20,9 +20,12 @@ def connect(sid: Text, environ) -> None:
     logger.info(f"[{sid}]connected")
     data = s3_service.get_all_from_db()
     logger.info(f"data size is {len(data)}")
+    results = []
     for d in data:
         url = s3_service.get_pre_signed_url(d.audio_key)
-        sio.emit("send_result", {"id": d.id, "url": url, "texts": d.text})
+        results.append({"id": d.id, "url": url, "texts": d.text})
+
+    sio.emit("send_results", results)
 
 
 @sio.event
