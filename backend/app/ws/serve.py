@@ -21,7 +21,7 @@ def connect(sid: Text, environ) -> None:
     data = s3_service.get_all_from_db()
     for d in data:
         url = s3_service.get_pre_signed_url(d.key)
-        sio.emit("send_result", {"key": d.audio_key, "url": url, "texts": d.text})
+        sio.emit("send_result", {"id": d.id, "url": url, "texts": d.text})
 
 
 @sio.event
@@ -41,7 +41,7 @@ def voice_message(sid: Text, data: List[bytes]) -> None:
     logger.info(f"[{sid}] result:{texts}")
     result.text = texts
     s3_service.save(result)
-    sio.emit("send_result", {"key": key, "url": url, "texts": texts})
+    sio.emit("send_result", {"id": result.id, "url": url, "texts": texts})
 
 
 @sio.event
