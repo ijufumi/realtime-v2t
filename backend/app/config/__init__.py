@@ -21,4 +21,4 @@ class Config:
     DB_NAME = os.getenv("DB_NAME", 'v2t')
     DB_USER = os.getenv("DB_USER", 'root')
     DB_PASS = os.getenv("DB_PASS", 'password')
-    MYSQL_URI = f'mysql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
+    MYSQL_URI = f'mysql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}?charset=utf8'
