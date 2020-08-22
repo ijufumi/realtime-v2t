@@ -9,7 +9,9 @@ class ResultRepository:
         self.session = session_maker()
 
     def all(self) -> List[Result]:
-        return self.session.query(Result).all()
+        results = self.session.query(Result).all()
+        self.session.rollback()
+        return results
 
     def create(self, model: Result) -> Result:
         self.session.add(model)
