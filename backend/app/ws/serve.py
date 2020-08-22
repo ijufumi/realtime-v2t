@@ -17,16 +17,18 @@ speech_service = GoogleSpeechService()
 
 @sio.event
 def connect(sid: Text, environ) -> None:
-    logger.info(f"connected: {sid}")
+    logger.info(f"[{sid}]connected")
     data = s3_service.get_all_from_db()
+    logger.info(f"data size is {len(data)}")
     for d in data:
-        url = s3_service.get_pre_signed_url(d.key)
+        url = s3_service.get_pre_signed_url(d.audio_key)
+        logger.info(f"id:{d.id}, text:{d.text}")
         sio.emit("send_result", {"id": d.id, "url": url, "texts": d.text})
 
 
 @sio.event
 def disconnect(sid) -> None:
-    logger.info(f"disconnected: {sid}")
+    logger.info(f"[{sid}]disconnected")
 
 
 @sio.event
