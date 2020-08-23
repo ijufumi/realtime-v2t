@@ -34,7 +34,7 @@ class S3Service:
                                                   HttpMethod='GET')
 
     def remove(self, key):
-        self.client.delete_obj(Bucket=Config.AWS_S3_BUCKET, Key=key)
+        self.client.delete_object(Bucket=Config.AWS_S3_BUCKET, Key=key)
 
     def save_to_tmp(self, data: List[bytes]) -> Path:
         webm_file = self._get_tmp_file("webm")
@@ -57,6 +57,12 @@ class S3Service:
 
     def save(self, model: Result) -> Result:
         return self.result_repository.update(model)
+
+    def delete(self, result_id: str) -> None:
+        result = self.result_repository.find_by_id(result_id)
+        if result:
+            self.remove(result.audio_key)
+            self.result_repository.delete(result)
 
     def get_all_from_db(self) -> List[Result]:
         return self.result_repository.all()

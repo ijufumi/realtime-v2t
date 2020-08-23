@@ -18,15 +18,7 @@ speech_service = GoogleSpeechService()
 @sio.event
 def connect(sid: Text, environ) -> None:
     logger.info(f"[{sid}]connected")
-    data = s3_service.get_all_from_db()
-    logger.info(f"data size is {len(data)}")
-    results = []
-    for d in data:
-        url = s3_service.get_pre_signed_url(d.audio_key)
-        results.append({"id": d.id, "url": url, "texts": d.text})
-
-    sio.emit("send_results", results)
-
+    send_all()
 
 @sio.event
 def disconnect(sid) -> None:
@@ -51,6 +43,24 @@ def voice_message(sid: Text, data: List[bytes]) -> None:
 @sio.event
 def message(sid: Text, data: Text) -> None:
     logger.info(f"[{sid}]received message:{data}")
+
+
+@sio.event
+def delete_result(sid: Text, result_id: Text) -> None:
+    logger.info(f"[{sid}]received delete message:{result_id}")
+    s3_service.delete(result_id)
+    send_all()
+
+
+def send_all():
+    data = s3_service.get_all_from_db()
+    logger.info(f"data size is {len(data)}")
+    results = []
+    for d in data:
+        url = s3_service.get_pre_signed_url(d.audio_key)
+        results.append({"id": d.id, "url": url, "texts": d.text})
+
+    sio.emit("send_results", results)
 
 
 def run_server():
