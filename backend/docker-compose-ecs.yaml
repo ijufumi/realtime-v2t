@@ -1,0 +1,26 @@
+version: '3'
+services:
+  database:
+    image: mysql
+    restart: always
+    volumes:
+      - db-data:/var/lib/mysql
+      - ./docker/database/my.cnf:/etc/mysqld/my.cnf
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - "3306:3306"
+    security_opt:
+      - seccomp:unconfined
+
+  app:
+    image: 044888744953.dkr.ecr.ap-northeast-1.amazonaws.com/realtime-v2t-backend:latest
+    ports:
+      - "8080:8080"
+    depends_on:
+      - database
+    env_file:
+      - ./.env
+
+volumes:
+  db-data:
