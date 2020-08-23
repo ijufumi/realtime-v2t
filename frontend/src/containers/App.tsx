@@ -1,8 +1,9 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
-import { faMicrophoneAlt, faPlayCircle, faStopCircle } from "@fortawesome/free-solid-svg-icons";
+import { faMicrophoneAlt, faPlayCircle, faStopCircle, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
+import ScaleLoader from "react-spinners/ScaleLoader";
 
 import { Table } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
@@ -15,14 +16,16 @@ import './App.css';
 
 enum Status {
   STARTED,
-  STOPPED
+  STOPPED,
+  SENDING
 }
 
 
 class App extends React.Component<any, any> {
   state = {
     status: Status.STOPPED,
-    results: []
+    results: [],
+
   }
 
   audio = new Audio();
@@ -38,7 +41,8 @@ class App extends React.Component<any, any> {
 
   handleReceiveResults = (results) => {
     this.setState({
-      results
+      results,
+      status: Status.STOPPED
     })
   }
 
@@ -49,7 +53,8 @@ class App extends React.Component<any, any> {
         const newResults = prev.results;
         newResults.push(result);
         return {
-          results: newResults
+          results: newResults,
+          status: Status.STOPPED
         }
       });
     }
@@ -66,10 +71,14 @@ class App extends React.Component<any, any> {
   handleStopRecord = () => {
     this.audio.handleStop();
     this.setState ({
-      status: Status.STOPPED
+      status: Status.SENDING
     });
     this.sockets.sendText('message', "end");
     this.sockets.sendBinary('voice_message', this.audio.recordedData);
+  }
+
+  handleDelete = (id) => {
+    this.sockets.sendText("delete_result", id);
   }
 
   renderResults = () => {
@@ -82,6 +91,7 @@ class App extends React.Component<any, any> {
           <Table.Row>
             <Table.HeaderCell width={10} textAlign={"center"}>Text</Table.HeaderCell>
             <Table.HeaderCell width={1} textAlign={"center"}>Voice</Table.HeaderCell>
+            <Table.HeaderCell width={1} textAlign={"center"}/>
           </Table.Row>
         </Table.Header>
         <Table.Body>
@@ -93,6 +103,15 @@ class App extends React.Component<any, any> {
               <Table.Cell textAlign={"center"}>
                 <Player id={d.id} src={d.url} />
               </Table.Cell>
+              <Table.Cell textAlign={"center"}>
+                <FontAwesomeIcon
+                  icon={faTrashAlt}
+                  size={'2x'}
+                  style={{
+                    cursor: 'pointer'
+                  }}
+                  onClick={() => this.handleDelete(d.id)} />
+              </Table.Cell>
             </Table.Row>
           })}
         </Table.Body>
@@ -103,7 +122,7 @@ class App extends React.Component<any, any> {
   render() {
     return (
       <Container>
-        <StopButtonContainer isVisible={this.state.status == Status.STARTED}>
+        <OverlayContainer isVisible={this.state.status == Status.STARTED}>
           <RecLabel>
             <FiberManualRecordIcon htmlColor={'red'} />
             REC
@@ -111,7 +130,10 @@ class App extends React.Component<any, any> {
           <StopButtonBlock onClick={this.handleStopRecord} >
             <FontAwesomeIcon icon={faStopCircle} size={'2x'} color={'#FFFFFF'}/>
           </StopButtonBlock>
-        </StopButtonContainer>
+        </OverlayContainer>
+        <OverlayContainer isVisible={this.state.status == Status.SENDING}>
+          <ScaleLoader height={40} radius={5} width={10} margin={5} color={"#4F59F3"}/>
+        </OverlayContainer>
         <MicrophoneContainer onClick={this.handleStartRecord}>
           <FontAwesomeIcon icon={faMicrophoneAlt} size={'10x'}/>
         </MicrophoneContainer>
@@ -150,7 +172,7 @@ const MicrophoneContainer = styled.div`
   cursor: pointer;
 `;
 
-const StopButtonContainer = styled.div<{ isVisible: boolean }>`
+const OverlayContainer = styled.div<{ isVisible: boolean }>`
   width: 100vw;
   height: 100vh;
   position: absolute;
@@ -159,7 +181,7 @@ const StopButtonContainer = styled.div<{ isVisible: boolean }>`
   align-items: center;
   top: 0;
   left: 0;  
-  background-color: rgb(0, 0, 0, 0.5);
+  background-color: rgb(0, 0, 0, 0.25);
   z-index: 10;
   visibility: ${({ isVisible }) => (isVisible ? 'visible'  : 'hidden')};
 `;
@@ -173,6 +195,7 @@ const StopButtonBlock = styled.div`
   height: 70px;
   border: 2px solid #FFFFFF;
   border-radius: 5px;
+  cursor: pointer;
 `;
 
 const RecLabelAnimation = keyframes`
@@ -203,20 +226,12 @@ const ResultContainer = styled.div`
   min-width: 650px;
 `;
 
-const Title = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size:  20px;
-  height: 30px;
-  width: 100px;
-`;
-
 const VoiceCell = styled.div`
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 `;
 
 class Player extends React.Component<any, any> {
