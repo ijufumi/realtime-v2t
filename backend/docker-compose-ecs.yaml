@@ -19,6 +19,7 @@ services:
       - database
     env_file:
       - ./.env
-
+    links:
+      - database
 volumes:
   db-data:
