@@ -40,7 +40,8 @@
   },
   "scripts": {
     "start": "webpack-dev-server",
-    "build": "webpack"
+    "build": "webpack",
+    "release": "npx semantic-release"
   },
   "browserslist": [
     ">0.2%",
