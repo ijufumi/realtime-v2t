@@ -1,0 +1,32 @@
+{
+  "name": "realtime-v2t",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Realtime voice  to  text",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "release": "npm run release -ws --if-present"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ijufumi/realtime-v2t.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ijufumi/realtime-v2t/issues"
+  },
+  "homepage": "https://github.com/ijufumi/realtime-v2t#readme",
+  "devDependencies": {
+    "semantic-release": "^19.0.2",
+    "semantic-release-monorepo": "^7.0.5"
+  },
+  "release": {
+      "extends": "semantic-release-monorepo"
+  },
+  "workspaces": [
+    "backend"
+  ]
+}
