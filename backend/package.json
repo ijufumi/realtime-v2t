@@ -1,7 +1,4 @@
 {
-    "scripts": {
-        "release": "npx semantic-release"
-    },
     "devDependencies": {
         "semantic-release": "^19.0.2",
         "semantic-release-monorepo": "^7.0.5"
