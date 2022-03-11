@@ -4,6 +4,7 @@
         "release": "npx semantic-release"
     },
     "release": {
+      "extends": "semantic-release-monorepo",
       "tagFormat": "backend-${version}",
       "plugins": [
         "@semantic-release/commit-analyzer",
