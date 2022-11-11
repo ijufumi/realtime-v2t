@@ -21,6 +21,7 @@
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^1.2.1",
     "socket.io": "^4.5.3",
+    "socket.io-parser": "^3.4.2",
     "styled-components": "^5.1.1",
     "typescript": "^3.9.7"
   },
