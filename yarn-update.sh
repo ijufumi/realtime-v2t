@@ -12,7 +12,7 @@ function getListName {
 }
 
 depList=$(getListName '.dependencies')
-yarn add $depList
+yarn -W add $depList
 
 depList=$(getListName '.devDependencies')
-yarn -D add $depList
+yarn -W -D add $depList
