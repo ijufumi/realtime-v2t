@@ -54,7 +54,6 @@
     "not op_mini all"
   ],
   "release": {
-    "extends": "semantic-release-monorepo",
     "tagFormat": "frontend-${version}",
     "plugins": [
       "@semantic-release/commit-analyzer",
