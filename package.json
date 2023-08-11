@@ -21,7 +21,7 @@
   "homepage": "https://github.com/ijufumi/realtime-v2t#readme",
   "dependencies": {},
   "devDependencies": {
-    "semantic-release": "^21.0.3",
+    "semantic-release": "^21.0.7",
     "semantic-release-monorepo": "^7.0.5"
   },
   "release": {
