@@ -20,5 +20,6 @@ depList=$(getListName '.devDependencies')
 yarn -W -D add $depList
 
 if [ -e package-lock.json ]; then
+  rm -f package-lock.json
   npm i
 fi
