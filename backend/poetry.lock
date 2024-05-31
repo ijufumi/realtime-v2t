@@ -224,19 +224,21 @@ idna = ["idna (>=2.1)"]
 
 [[package]]
 name = "eventlet"
-version = "0.31.1"
+version = "0.36.1"
 description = "Highly concurrent networking library"
 optional = false
-python-versions = "*"
+python-versions = ">=3.7"
 files = [
-    {file = "eventlet-0.31.1-py2.py3-none-any.whl", hash = "sha256:1524405edc7dddd3bad2600350ec10a241769a6855175f355e532d88e3f981e5"},
-    {file = "eventlet-0.31.1.tar.gz", hash = "sha256:b9e9126304fae3cdf203f1f17660bba79ab7c488e05d60331277cae4247f8d76"},
+    {file = "eventlet-0.36.1-py3-none-any.whl", hash = "sha256:e42d0f73b718e654c223a033b8692d1a94d778a6c1deb6c3d21442746f3f727f"},
+    {file = "eventlet-0.36.1.tar.gz", hash = "sha256:d227fe76a63d9e6a6cef53beb8ad0b2dc40a5e7737c801f4b474cfae1db07bc5"},
 ]
 
 [package.dependencies]
-dnspython = ">=1.15.0,<2.0.0"
-greenlet = ">=0.3"
-six = ">=1.10.0"
+dnspython = ">=1.15.0"
+greenlet = ">=1.0"
+
+[package.extras]
+dev = ["black", "build", "commitizen", "isort", "pip-tools", "pre-commit", "twine"]
 
 [[package]]
 name = "ffmpeg-python"
@@ -1013,4 +1015,4 @@ test = ["big-O", "jaraco.functools", "jaraco.itertools", "jaraco.test", "more-it
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "63891785dcb0868785c82e69310f84fbac61047a34bc269a5c9622e6681d4e42"
+content-hash = "503fbc552a4dbf4b878e7c8cfa0c5a20ff06d3729ee6feadf83c0c4001d8391e"
