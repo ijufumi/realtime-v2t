@@ -24,7 +24,7 @@
     "socket.io": "^4.8.1",
     "socket.io-client": "^4.8.1",
     "socket.io-parser": "^3.3.4",
-    "styled-components": "^6.1.13",
+    "styled-components": "^6.4.1",
     "typescript": "^5.6.2"
   },
   "devDependencies": {
