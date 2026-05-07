@@ -20,8 +20,8 @@
   },
   "homepage": "https://github.com/ijufumi/realtime-v2t#readme",
   "devDependencies": {
-    "semantic-release": "^24.1.0",
-    "semver": "^7.6.3"
+    "semantic-release": "^24.2.9",
+    "semver": "^7.7.4"
   },
   "release": {
     "plugins": [
@@ -33,5 +33,9 @@
   "workspaces": [
     "backend",
     "frontend"
-  ]
+  ],
+  "resolutions": {
+    "nanoid": "^3.3.8",
+    "cross-spawn": "^7.0.5"
+  }
 }
