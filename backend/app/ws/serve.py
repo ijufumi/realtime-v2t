@@ -7,8 +7,7 @@ from app.logging import logger
 from app.services import S3Service, GoogleSpeechService
 
 
-manager = socketio.BaseManager()
-sio = socketio.Server(async_mode='eventlet', client_manager=manager, binary=True, cors_allowed_origins='*')
+sio = socketio.Server(async_mode='eventlet', cors_allowed_origins='*')
 app = socketio.WSGIApp(sio, static_files={'/static': './app/ws/static/index.html'})
 
 s3_service = S3Service()

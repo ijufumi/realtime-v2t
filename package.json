@@ -36,6 +36,21 @@
   ],
   "resolutions": {
     "nanoid": "^3.3.8",
-    "cross-spawn": "^7.0.5"
+    "cross-spawn": "^7.0.5",
+    "handlebars": "^4.7.9",
+    "lodash": "^4.18.0",
+    "lodash-es": "^4.18.0",
+    "postcss": "^8.5.10",
+    "ip-address": "^10.1.1",
+    "follow-redirects": "^1.16.0",
+    "brace-expansion": "^2.0.3",
+    "picomatch": "^4.0.4",
+    "serialize-javascript": "^7.0.5",
+    "minimatch": "^9.0.7",
+    "ajv": "^8.18.0",
+    "js-yaml": "^4.1.1",
+    "@babel/runtime": "^7.26.10",
+    "@babel/helpers": "^7.26.10",
+    "socket.io-parser": "^4.2.4"
   }
 }
