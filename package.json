@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/ijufumi/realtime-v2t#readme",
   "devDependencies": {
-    "semantic-release": "^24.2.9",
+    "semantic-release": "^25.0.3",
     "semver": "^7.7.4"
   },
   "release": {
