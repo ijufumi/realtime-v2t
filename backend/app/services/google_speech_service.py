@@ -1,6 +1,4 @@
-from typing import List
 from google.cloud import speech_v1p1beta1
-from google.cloud.speech_v1p1beta1 import enums
 
 
 class GoogleSpeechService:
