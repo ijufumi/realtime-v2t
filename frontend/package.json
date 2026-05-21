@@ -11,7 +11,7 @@
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@material-ui/core": "^4.12.4",
     "@material-ui/icons": "^4.11.3",
-    "engine.io": "^6.6.7",
+    "engine.io": "^6.6.8",
     "loader-utils": "^3.3.1",
     "mobx": "^6.13.2",
     "mobx-react": "^9.1.1",
