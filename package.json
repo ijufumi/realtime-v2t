@@ -51,6 +51,14 @@
     "js-yaml": "^4.1.1",
     "@babel/runtime": "^7.26.10",
     "@babel/helpers": "^7.26.10",
-    "socket.io-parser": "^4.2.4"
+    "socket.io-parser": "^4.2.4",
+    "qs": "^6.15.2",
+    "ws": "^8.20.1",
+    "uuid": "^11.1.1"
+  },
+  "overrides": {
+    "qs": "^6.15.2",
+    "ws": "^8.20.1",
+    "uuid": "^11.1.1"
   }
 }
